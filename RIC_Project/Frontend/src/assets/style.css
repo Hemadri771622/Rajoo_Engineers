@@ -1,0 +1,437 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================= BASE ================= */
+* {
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  background: radial-gradient(circle at top, #0c2c3d, #061621);
+  font-family: "Inter", sans-serif;
+  color: #e6f7fb;
+}
+
+/* SLIDE-RIGHT BACK ANIMATION */
+.slide-back-enter-active,
+.slide-back-leave-active {
+  transition: all 0.35s ease;
+}
+
+.slide-back-enter-from {
+  transform: translateX(-40px);
+  opacity: 0;
+}
+
+.slide-back-leave-to {
+  transform: translateX(40px);
+  opacity: 0;
+}
+
+/* default fade (fallback) */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* ========================================= */
+/* UNIVERSAL PREMIUM INTERACTION SYSTEM      */
+/* ========================================= */
+
+/* Elements that should glow */
+.panel,
+.row,
+.stat,
+.die-zone,
+.oee-box,
+.notification-icon,
+.power-icon,
+.back-icon {
+  position: relative;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.notification-icon, .power-icon, .back-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.16);
+}
+
+/* Hover glow */
+/* .panel:hover, */
+.row:hover,
+.stat:hover,
+.die-zone:hover,
+.oee-box:hover,
+.notification-icon:hover,
+.power-icon:hover,
+.back-icon:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-radius: 10px;
+
+  box-shadow:
+    0 0 0 1px rgba(127,220,255,0.25),
+    0 10px 28px rgba(0,0,0,0.35),
+    0 0 18px rgba(127,220,255,0.35);
+
+  background-color: rgba(255,255,255,0.16);
+}
+
+/* Click feedback */
+/* .panel:active, */
+.row:active,
+.stat:active,
+.die-zone:active,
+.oee-box:active,
+.notification-icon:active,
+.power-icon:active,
+.pill.dark:active,
+.back-icon:active {
+  transform: scale(0.97);
+}
+
+/* Glassmorphism polish */
+.panel,
+.row,
+.stat,
+.die-zone,
+.oee-box,
+.pill.dark,
+.back-icon {
+  backdrop-filter: blur(6px);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.stat {
+  background: rgba(255,255,255,0.14);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.stat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.stat {
+  position: relative;
+  padding: 14px 14px;
+  min-height: 72px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.16),
+    rgba(255,255,255,0.07)
+  );
+
+  text-align: center;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #d9f2f8;
+
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.14);
+
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.22);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.02);
+  pointer-events: none;
+}
+
+.stat span {
+  display: block;
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* ========================================= */
+/* SIDEBAR – PREMIUM BUTTON SYSTEM           */
+/* ========================================= */
+
+.menu-section {
+  margin-bottom: 12px;
+}
+
+/* ========================================= */
+/* GLOBAL LAYOUT STRUCTURE 
+/* ========================================= */
+
+.app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 190px;
+  min-width: 190px;
+  max-width: 190px;
+  height: 100vh;
+  padding: 12px 12px 16px 12px;
+  background: linear-gradient(180deg, #051c2a, #04121b);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+
+  padding: 14px 20px 14px 20px;
+
+  overflow-y: auto;
+}
+
+.panel {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100%;
+
+  background: rgba(255,255,255,0.08);
+
+  border-radius: 20px;
+
+  padding: 14px 16px;
+}
+
+/* ================= PANEL TITLE ================= */
+.panel > h2 {
+  margin: -4px 0 10px 0;
+  font-size: 20px;   
+  font-weight: 600;
+}
+
+.left-panel {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+
+/* ================= AVATAR ================= */
+.avatar {
+  width: 124px;
+  height: 92px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  background: linear-gradient(
+    145deg,
+    rgba(120,180,220,0.22),
+    rgba(35,65,110,0.20)
+  );
+
+  border: 1px solid rgba(170,230,255,0.35);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(0,0,0,0.35),
+    0 0 18px rgba(77,208,225,0.12),
+    0 8px 20px rgba(0,0,0,0.35);
+}
+
+/* OUTER GLOW */
+.avatar::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border-radius: 24px;
+
+  padding: 1px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(200,245,255,0.55),
+    rgba(77,208,225,0.12)
+  );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+/* LOGO IMAGE */
+.avatar img {
+  width: 118px;
+  height: 66px;
+
+  object-fit: contain;
+
+  border-radius: 16px;
+
+  background: #000;
+
+  padding: 4px 6px;
+
+  border: 1px solid rgba(180,230,255,0.18);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 10px rgba(77,208,225,0.08);
+
+  display: block;
+}
+/* ================= MENU ================= */
+.menu-section {
+  margin-bottom: 14px;
+}
+
+.menu-title {
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: #4dd0e1;
+  margin: 8px 0 6px;
+}
+
+.menu-item {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  color: #e6f7fb;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  text-align: left;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+  background: rgba(127,220,255,0.15);
+}
+
+.menu-item.active {
+  background: rgba(127,220,255,0.3);
+}
+
+/* ================= MAIN ================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.graph-row {
+    height: 220px;
+    padding: 18px 8px 12px 8px;
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 12px;
+    position: relative;
+}
+
+.graph-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: #e6f7fb;
+}
+
+.graph-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+  flex: 1;
+  min-height: 0;
+}
+
+.graph-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.graph-card canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

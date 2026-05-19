@@ -1,0 +1,11 @@
+flask==3.0.3
+flask-cors==4.0.1
+flask-socketio==5.3.6
+flask-jwt-extended==4.6.0
+eventlet==0.36.1
+opcua==0.98.13
+pandas==2.2.2
+numpy==1.26.4
+reportlab==4.2.2
+matplotlib==3.9.0
+cryptography==42.0.8
