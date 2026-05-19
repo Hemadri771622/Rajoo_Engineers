@@ -1,0 +1,213 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* SLIDE-RIGHT BACK ANIMATION */
+.slide-back-enter-active,
+.slide-back-leave-active {
+  transition: all 0.35s ease;
+}
+
+.slide-back-enter-from {
+  transform: translateX(-40px);
+  opacity: 0;
+}
+
+.slide-back-leave-to {
+  transform: translateX(40px);
+  opacity: 0;
+}
+
+/* default fade (fallback) */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* ========================================= */
+/* UNIVERSAL PREMIUM INTERACTION SYSTEM      */
+/* ========================================= */
+
+/* Elements that should glow */
+.panel,
+.row,
+.stat,
+.die-zone,
+.oee-box,
+.menu-item,
+.notification-icon,
+.power-icon,
+.pill.dark,
+.back-icon {
+  position: relative;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+/* Hover glow */
+.panel:hover,
+.row:hover,
+.stat:hover,
+.die-zone:hover,
+.oee-box:hover,
+.menu-item:hover,
+.notification-icon:hover,
+.power-icon:hover,
+.pill.dark:hover,
+.back-icon:hover {
+  transform: translateY(-2px) scale(1.02);
+
+  box-shadow:
+    0 0 0 1px rgba(127,220,255,0.25),
+    0 10px 28px rgba(0,0,0,0.35),
+    0 0 18px rgba(127,220,255,0.35);
+
+  background-color: rgba(255,255,255,0.16);
+}
+
+/* Click feedback */
+.panel:active,
+.row:active,
+.stat:active,
+.die-zone:active,
+.oee-box:active,
+.menu-item:active,
+.notification-icon:active,
+.power-icon:active,
+.pill.dark:active,
+.back-icon:active {
+  transform: scale(0.97);
+}
+
+/* Glassmorphism polish */
+.panel,
+.row,
+.stat,
+.die-zone,
+.oee-box,
+.pill.dark,
+.back-icon {
+  backdrop-filter: blur(6px);
+}
+
+/* ========================================= */
+/* SIDEBAR – PREMIUM BUTTON SYSTEM           */
+/* ========================================= */
+
+.menu-section {
+  margin-bottom: 12px;
+}
+
+.menu-item {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03)
+  );
+
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #e6f7fb;
+
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+
+  cursor: pointer;
+  text-align: left;
+
+  backdrop-filter: blur(6px);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.menu-item:hover {
+  transform: translateX(6px) scale(1.02);
+
+  background: rgba(127,220,255,0.18);
+
+  box-shadow:
+    0 0 0 1px rgba(127,220,255,0.35),
+    0 6px 18px rgba(0,0,0,0.45),
+    0 0 14px rgba(127,220,255,0.35);
+}
+
+.menu-item.active {
+  background: linear-gradient(
+    180deg,
+    rgba(127,220,255,0.35),
+    rgba(127,220,255,0.18)
+  );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(127,220,255,0.5),
+    0 6px 18px rgba(0,0,0,0.45),
+    0 0 16px rgba(127,220,255,0.45);
+
+  transform: translateX(6px);
+}
+
+.menu-item:active {
+  transform: translateX(6px) scale(0.96);
+}
+
+
+/* ========================================= */
+/* GLOBAL LAYOUT STRUCTURE 
+/* ========================================= */
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  /* adjust if needed */
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  width: 100%;
+}
+
+.left-panel {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
