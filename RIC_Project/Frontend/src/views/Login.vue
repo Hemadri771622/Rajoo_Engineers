@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   name: "Login",
 
@@ -88,37 +90,15 @@ export default {
 
       try {
 
-        const res = await fetch(
-          "http://127.0.0.1:5000/api/auth/login",
+        const res = await api.post(
+          "/api/auth/login",
           {
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-              role: this.role,
-              password: this.password.trim()
-            })
+            role: this.role,
+            password: this.password.trim()
           }
         );
 
-        const text = await res.text();
-
-        let data = {};
-
-        try {
-          data = JSON.parse(text);
-        } catch {
-          console.error("Non-JSON response:", text);
-        }
-
-        if (!res.ok) {
-          this.error =
-            data.message || "Invalid credentials";
-          return;
-        }
+        const data = res.data;
 
         localStorage.setItem(
           "token",
@@ -137,7 +117,8 @@ export default {
         console.error("LOGIN ERROR:", err);
 
         this.error =
-          "Server not reachable (CORS / Network error)";
+          err.response?.data?.message ||
+          "Server not reachable";
       }
     }
   }
