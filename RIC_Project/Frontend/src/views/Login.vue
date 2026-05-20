@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import api from "@/api.js";
+import api from "@/services/api.js";
 
 export default {
   name: "Login",
