@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000", {
+const socket = io("http://101.101.101.50:5000", {
   transports: ["polling"],
   upgrade: false,
   rememberUpgrade: false,
