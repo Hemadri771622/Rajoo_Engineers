@@ -16,7 +16,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://sewing-sponsor-richardson-exception.trycloudflare.com/api"
+  baseURL: "https://aggregate-domain-pictures-perl.trycloudflare.com"
 });
 
 api.interceptors.request.use(config => {

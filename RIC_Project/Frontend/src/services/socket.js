@@ -29,7 +29,7 @@
 import { io } from "socket.io-client";
 
 const socket = io(
-  "https://sewing-sponsor-richardson-exception.trycloudflare.com",
+  "https://aggregate-domain-pictures-perl.trycloudflare.com",
   {
     transports: ["websocket", "polling"],
     autoConnect: true,
