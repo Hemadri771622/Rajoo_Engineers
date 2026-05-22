@@ -43,10 +43,10 @@ WINDERS = [1, 2]
 OPC_URL = "opc.tcp://101.101.101.51:48010"
 
 # at home
-ENABLE_OPC = False
+# ENABLE_OPC = False
 
 #at office(with opc)
-# ENABLE_OPC = True
+ENABLE_OPC = True
 
 client = None
 
