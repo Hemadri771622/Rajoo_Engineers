@@ -40,8 +40,8 @@ BASE_INDEX = 29
 LAYERS = [1, 2, 3]
 WINDERS = [1, 2]
 
-# OPC_URL = "opc.tcp://101.101.101.51:48010"
-OPC_URL = "opc.tcp://101.101.101.201:4840"
+OPC_URL = "opc.tcp://101.101.101.51:48010"
+
 
 # at home
 # ENABLE_OPC = False
