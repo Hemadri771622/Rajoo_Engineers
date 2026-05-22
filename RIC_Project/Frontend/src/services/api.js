@@ -16,7 +16,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://aggregate-domain-pictures-perl.trycloudflare.com"
+  baseURL: "https://api.appvirtualex.com"
 });
 
 api.interceptors.request.use(config => {

@@ -29,7 +29,7 @@
 import { io } from "socket.io-client";
 
 const socket = io(
-  "https://aggregate-domain-pictures-perl.trycloudflare.com",
+  "https://api.appvirtualex.com",
   {
     transports: ["websocket", "polling"],
     autoConnect: true,
