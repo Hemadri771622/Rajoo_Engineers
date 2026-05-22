@@ -397,7 +397,8 @@ def opc_data_task():
                     read("ns=2;s=Studio.tags.Application.g_osc_haul_off_act_rpm")
                 )
             }
-
+            
+            print("MACHINE VALUES:", machine)
             insert_machine_overview(machine)
 
             # =================================================

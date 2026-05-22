@@ -260,6 +260,201 @@ winders: {
 
 // ================= SOCKET LISTENER =================
 
+// socket.on("telemetry_update", (data) => {
+
+//   console.log(
+//     "GLOBAL TELEMETRY:",
+//     data
+//   );
+
+//   // =================================================
+//   // MACHINE
+//   // =================================================
+
+//   telemetry.machine =
+//     data.machine_overview ||
+//     telemetry.machine;
+
+//   // =================================================
+//   // CONTROL KPIs
+//   // =================================================
+
+//   telemetry.tower_nip = {
+
+//     set:
+//       Number(
+//         data.machine_overview?.set_tower_nip
+//       ) || 0,
+
+//     actual:
+//       Number(
+//         data.machine_overview?.actual_tower_nip
+//       ) || 0
+//   };
+
+//   telemetry.air_ring = {
+
+//     set:
+//       Number(
+//         data.machine_overview?.set_air_ring
+//       ) || 0,
+
+//     actual:
+//       Number(
+//         data.machine_overview?.actual_air_ring
+//       ) || 0
+//   };
+
+//   telemetry.regeneration = {
+
+//     set:
+//       Number(
+//         data.machine_overview?.set_regeneration
+//       ) || 0,
+
+//     actual:
+//       Number(
+//         data.machine_overview?.actual_regeneration
+//       ) || 0
+//   };
+
+//   telemetry.reverse_hauloff = {
+
+//     set:
+//       Number(
+//         data.machine_overview?.set_reverse_hauloff
+//       ) || 0,
+
+//     actual:
+//       Number(
+//         data.machine_overview?.actual_reverse_hauloff
+//       ) || 0
+//   };
+
+//   // =================================================
+//   // KPI CACHE
+//   // =================================================
+
+//   telemetry.kpis = {
+
+//     tower_set:
+//       telemetry.tower_nip.set,
+
+//     tower_act:
+//       telemetry.tower_nip.actual,
+
+//     air_set:
+//       telemetry.air_ring.set,
+
+//     air_act:
+//       telemetry.air_ring.actual,
+
+//     regen_set:
+//       telemetry.regeneration.set,
+
+//     regen_act:
+//       telemetry.regeneration.actual,
+
+//     hauloff_set:
+//       telemetry.reverse_hauloff.set,
+
+//     hauloff_act:
+//       telemetry.reverse_hauloff.actual,
+
+//     valve_act:
+//       Number(
+//         data.machine_overview?.valve_position
+//       ) || 0
+//   };
+
+//   // =================================================
+//   // SPEED
+//   // =================================================
+
+//   telemetry.speed.set =
+//     data.speed_trend?.set || [];
+
+//   telemetry.speed.actual =
+//     data.speed_trend?.actual || [];
+
+//   // =================================================
+//   // IBC
+//   // =================================================
+
+//   telemetry.ibc.in =
+//     data.ibc_temp?.in || [];
+
+//   telemetry.ibc.out =
+//     data.ibc_temp?.out || [];
+
+//   // =================================================
+//   // THICKNESS
+//   // =================================================
+
+//   telemetry.thickness.trend =
+//     data.thickness?.trend || [];
+
+//   // =================================================
+//   // DIE
+//   // =================================================
+
+//   telemetry.die =
+//     data.die_temp_zones || [];
+
+//   // =================================================
+//   // LAYERS
+//   // =================================================
+
+//   telemetry.layers =
+//     data.layer_data ||
+//     telemetry.layers;
+
+//   telemetry.layerTrends =
+//     data.layer_trends ||
+//     telemetry.layerTrends;
+
+//   // =================================================
+//   // WINDERS
+//   // =================================================
+
+//   telemetry.winders =
+//     data.winder_data ||
+//     telemetry.winders;
+
+//   telemetry.winderTrends =
+//     data.winder_trends ||
+//     telemetry.winderTrends;
+
+//   // =================================================
+//   // EXTRUDERS
+//   // =================================================
+
+//   telemetry.extruders =
+//     data.extruders ||
+//     telemetry.extruders;
+
+//   // =================================================
+//   // MATERIAL CALCULATION
+//   // =================================================
+
+//   const set =
+//     telemetry.machine.total_set_output || 0;
+
+//   const act =
+//     telemetry.machine.total_actual_output || 0;
+
+//   if (set > 0) {
+
+//     const efficiency =
+//       (act / set) * 100;
+
+//     telemetry.material.efficiency =
+//       efficiency.toFixed(1);
+
+//     telemetry.material.waste =
+//       (100 - efficiency).toFixed(1);
+//   }
+// });
 socket.on("telemetry_update", (data) => {
 
   console.log(
@@ -271,9 +466,10 @@ socket.on("telemetry_update", (data) => {
   // MACHINE
   // =================================================
 
-  telemetry.machine =
-    data.machine_overview ||
-    telemetry.machine;
+  Object.assign(
+    telemetry.machine,
+    data.machine_overview || {}
+  );
 
   // =================================================
   // CONTROL KPIs
@@ -405,33 +601,38 @@ socket.on("telemetry_update", (data) => {
   // LAYERS
   // =================================================
 
-  telemetry.layers =
-    data.layer_data ||
-    telemetry.layers;
+  Object.assign(
+    telemetry.layers,
+    data.layer_data || {}
+  );
 
-  telemetry.layerTrends =
-    data.layer_trends ||
-    telemetry.layerTrends;
+  Object.assign(
+    telemetry.layerTrends,
+    data.layer_trends || {}
+  );
 
   // =================================================
   // WINDERS
   // =================================================
 
-  telemetry.winders =
-    data.winder_data ||
-    telemetry.winders;
+  Object.assign(
+    telemetry.winders,
+    data.winder_data || {}
+  );
 
-  telemetry.winderTrends =
-    data.winder_trends ||
-    telemetry.winderTrends;
+  Object.assign(
+    telemetry.winderTrends,
+    data.winder_trends || {}
+  );
 
   // =================================================
   // EXTRUDERS
   // =================================================
 
-  telemetry.extruders =
-    data.extruders ||
-    telemetry.extruders;
+  Object.assign(
+    telemetry.extruders,
+    data.extruders || {}
+  );
 
   // =================================================
   // MATERIAL CALCULATION
@@ -454,4 +655,5 @@ socket.on("telemetry_update", (data) => {
     telemetry.material.waste =
       (100 - efficiency).toFixed(1);
   }
+
 });
