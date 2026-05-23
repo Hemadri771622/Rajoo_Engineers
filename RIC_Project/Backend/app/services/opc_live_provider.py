@@ -78,6 +78,8 @@ def load_material_master():
 
     try:
 
+        import os
+
         print("===================================")
         print("LOADING MATERIAL MASTER...")
         print("===================================")
@@ -86,41 +88,57 @@ def load_material_master():
         # READ MATERIAL EXCEL
         # =================================================
 
+        import os
+
+        excel_path = "/home/ric/Rajoo_Engineers/RIC_Project/Backend/materials/Materials.xlsx"
+
+        print("===================================")
+        print(f"EXCEL PATH -> {excel_path}")
+        print(f"FILE EXISTS -> {os.path.exists(excel_path)}")
+        print("===================================")
+
+        if not os.path.exists(excel_path):
+
+            raise Exception(
+                f"Excel file not found -> {excel_path}"
+            )
+
         df = pd.read_excel(
-            "materials/Materials.xlsx",
-            sheet_name="Material_list",
-            header=None
+            excel_path,
+            sheet_name=0,
+            header=None,
+            engine="openpyxl"
         )
 
         df = df.fillna("")
 
-        # print("===================================")
-        # print("MATERIAL EXCEL PREVIEW")
-        # print("===================================")
+        print("===================================")
+        print("EXCEL LOADED SUCCESS")
+        print("===================================")
 
-        # print(df.head(20).to_string())
+        print(df.head(20).to_string())
 
-        # print("===================================")
+        print("TOTAL ROWS:", len(df))
 
-        temp_master = {}
+        print("===================================")
+   
+        # =================================================
+        # TEMP STORAGE
+        # =================================================
 
         temp_master = {}
 
         # =================================================
-        # MATERIAL EXCEL STRUCTURE
-        #
-        # COL 3 = MATERIAL NAME
-        # COL 5 = OPC TAG
-        # COL 6 = DENSITY
-        #
-        # OPC TAG FORMAT:
-        # g_material_name[1]
-        # g_material_name[2]
+        # LOOP ROWS
         # =================================================
 
-        for _, row in df.iterrows():
+        for row_index, row in df.iterrows():
 
             try:
+
+                # =============================================
+                # READ VALUES
+                # =============================================
 
                 material_name = str(
                     row[3]
@@ -134,9 +152,16 @@ def load_material_master():
                     row[6]
                 )
 
-                # =========================================
-                # SKIP EMPTY ROWS
-                # =========================================
+                print(
+                    f"ROW={row_index} "
+                    f"NAME={material_name} "
+                    f"TAG={opc_tag} "
+                    f"DENSITY={density}"
+                )
+
+                # =============================================
+                # SKIP EMPTY
+                # =============================================
 
                 if material_name == "":
                     continue
@@ -144,30 +169,45 @@ def load_material_master():
                 if opc_tag == "":
                     continue
 
-                # =========================================
-                # EXTRACT MATERIAL INDEX
-                # FROM:
-                # g_material_name[1]
-                # TO:
-                # 1
-                # =========================================
+                # =============================================
+                # EXTRACT INDEX
+                # =============================================
 
-                if "[" not in opc_tag:
-                    continue
+                cleaned_tag = str(opc_tag).strip()
 
-                try:
+                start = cleaned_tag.rfind("[")
 
-                    material_index = int(
-                        opc_tag.rsplit("[", 1)[1].split("]")[0]
+                end = cleaned_tag.rfind("]")
+
+                if start == -1 or end == -1:
+
+                    print(
+                        f"INVALID TAG FORMAT -> "
+                        f"{cleaned_tag}"
                     )
 
-                except:
                     continue
-                # =========================================
-                # STORE IN MASTER
-                # =========================================
 
-                temp_master[material_index] = {
+                material_index_str = cleaned_tag[
+                    start + 1:end
+                ].strip()
+
+                material_index = int(
+                    float(material_index_str)
+                )
+
+                print(
+                    f"PARSED MATERIAL -> "
+                    f"INDEX={material_index}"
+                )
+
+                # =============================================
+                # STORE
+                # =============================================
+
+                temp_master[
+                    material_index
+                ] = {
 
                     "material_name": material_name,
 
@@ -175,25 +215,38 @@ def load_material_master():
                 }
 
                 print(
-                    f"LOADED -> "
-                    f"INDEX={material_index} | "
-                    f"NAME={material_name} | "
-                    f"DENSITY={density}"
+                    f"ADDED -> "
+                    f"{material_index} : "
+                    f"{material_name}"
                 )
 
             except Exception as row_error:
 
                 print(
-                    f"ROW SKIPPED -> {row_error}"
+                    f"ROW FAILED -> "
+                    f"ROW={row_index} "
+                    f"ERROR={row_error}"
                 )
+
+        # =================================================
+        # FINAL ASSIGN
+        # =================================================
 
         material_master = temp_master
 
         material_loaded = True
 
         print("===================================")
-        print("MATERIAL MASTER LOADED SUCCESS")
-        print(f"TOTAL MATERIALS: {len(material_master)}")
+        print("FINAL MATERIAL MASTER")
+        print("===================================")
+
+        print(material_master)
+
+        print(
+            f"TOTAL MATERIALS LOADED -> "
+            f"{len(material_master)}"
+        )
+
         print("===================================")
 
     except Exception as e:
@@ -204,6 +257,7 @@ def load_material_master():
         print("MATERIAL MASTER LOAD FAILED")
         print(str(e))
         print("===================================")
+
 
 # =========================================================
 # SAFE FLOAT
@@ -299,8 +353,9 @@ def read(tag):
 # OPC TASK
 # =========================================================
 
-def opc_data_task():
+def opc_data_task(): 
 
+    
     if not ENABLE_OPC:
         print("[OPC] Disabled")
         return
@@ -312,9 +367,31 @@ def opc_data_task():
 
     connect_opc()
 
-    if not material_loaded:
+    print("FORCING MATERIAL MASTER LOAD")
+
+    try:
+
+        print("CALLING LOAD MATERIAL MASTER")
 
         load_material_master()
+
+        print("LOAD MATERIAL MASTER FINISHED")
+
+        print(
+            f"MATERIAL COUNT AFTER LOAD -> "
+            f"{len(material_master)}"
+        )
+
+    except Exception as e:
+
+        print(
+            f"LOAD MATERIAL MASTER CRASHED -> {e}"
+        )
+
+        import traceback
+
+        print(traceback.format_exc())
+
 
     print("===================================")
     print("OPC LIVE Provider Started")
@@ -328,11 +405,22 @@ def opc_data_task():
             # PERIODIC MATERIAL RELOAD
             # =================================================
 
-            if time.time() - last_material_reload > 300:
+            if (
+                time.time() - last_material_reload > 300
+                or len(material_master) == 0
+            ):
+
+                print("RELOADING MATERIAL MASTER")
 
                 load_material_master()
 
+                print(
+                    f"MATERIAL COUNT -> "
+                    f"{len(material_master)}"
+                )
+
                 last_material_reload = time.time()
+
 
             # =================================================
             # MACHINE OVERVIEW
@@ -717,8 +805,31 @@ def opc_data_task():
                         raw_value = read(selection_tag)
 
                         try:
-                            material_index = int(raw_value)
-                        except:
+
+                            material_index = int(
+                                float(
+                                    str(raw_value).strip()
+                                )
+                            )
+
+                            print(
+                                f"MATERIAL INDEX -> "
+                                f"EXT={ext} "
+                                f"COMP={i} "
+                                f"RAW={raw_value} "
+                                f"INDEX={material_index}"
+                            )
+
+                        except Exception as parse_error:
+
+                            print(
+                                f"MATERIAL INDEX PARSE FAILED -> "
+                                f"EXT={ext} "
+                                f"COMP={i} "
+                                f"RAW={raw_value} "
+                                f"ERROR={parse_error}"
+                            )
+
                             material_index = 0
 
                     except Exception as e:
@@ -733,71 +844,93 @@ def opc_data_task():
                     # MATERIAL LOOKUP
                     # =============================================
 
-                    material_name = "NOT SELECTED"
-                    density = 0
+                    cache_key = f"{ext}_{i}"
+
+                    cache = last_valid_materials.get(
+                        cache_key,
+                        {}
+                    )
+
+                    material_name = cache.get(
+                        "material_name",
+                        "NOT SELECTED"
+                    )
+
+                    density = cache.get(
+                        "density",
+                        0
+                    )
 
                     try:
 
-                        material_data = material_master.get(material_index)
+                        print(
+                            f"LOOKUP -> "
+                            f"INDEX={material_index} "
+                            f"AVAILABLE={material_index in material_master}"
+                        )
 
-                        if material_data:
+                        print(
+                            f"MATERIAL MASTER SAMPLE KEYS -> "
+                            f"{list(material_master.keys())[:20]}"
+                        )
 
-                            material_name = material_data.get(
-                                "material_name",
-                                "NOT FOUND"
+                        if material_index > 0:
+
+                            material_data = material_master.get(
+                                int(material_index)
                             )
 
-                            density = safe_float(
-                                material_data.get(
-                                    "density",
-                                    0
-                                )
-                            )
+                            if material_data is not None:
 
-                            # =====================================
-                            # CACHE LAST VALID MATERIAL
-                            # =====================================
+                                material_name = str(
+                                    material_data.get(
+                                        "material_name",
+                                        "NOT SELECTED"
+                                    )
+                                ).strip()
 
-                            last_valid_materials[
-                                f"{ext}_{i}"
-                            ] = {
-
-                                "material_index": material_index,
-
-                                "material_name": material_name,
-
-                                "density": density
-                            }
-
-                        else:
-
-                            cache = last_valid_materials.get(
-                                f"{ext}_{i}"
-                            )
-
-                            if cache:
-
-                                material_index = cache.get(
-                                    "material_index",
-                                    0
+                                density = safe_float(
+                                    material_data.get(
+                                        "density",
+                                        0
+                                    )
                                 )
 
-                                material_name = cache.get(
-                                    "material_name",
-                                    "NOT FOUND"
+                                print(
+                                    f"MATCH FOUND -> "
+                                    f"INDEX={material_index} "
+                                    f"NAME={material_name} "
+                                    f"DENSITY={density}"
                                 )
 
-                                density = cache.get(
-                                    "density",
-                                    0
+                                # =====================================
+                                # UPDATE CACHE
+                                # =====================================
+
+                                last_valid_materials[
+                                    cache_key
+                                ] = {
+
+                                    "material_index": material_index,
+
+                                    "material_name": material_name,
+
+                                    "density": density
+                                }
+
+                            else:
+
+                                print(
+                                    f"NO MATERIAL FOUND -> "
+                                    f"INDEX={material_index}"
                                 )
 
                     except Exception as e:
 
                         print(
-                            f"MATERIAL LOOKUP FAILED EXT={ext} COMP={i} -> {e}"
+                            f"MATERIAL LOOKUP FAILED EXT={ext} "
+                            f"COMP={i} -> {e}"
                         )
-
                     # =============================================
                     # SET %
                     # =============================================
