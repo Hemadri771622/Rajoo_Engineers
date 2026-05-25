@@ -35,9 +35,9 @@
 import { io } from "socket.io-client";
 
 const socket = io(
-  "https://api.appvirtualex.com",
+  "https://ric.appvirtualex.com",
   {
-    transports: ["polling", "websocket"],
+    transports: ["polling"],
 
     autoConnect: true,
 
