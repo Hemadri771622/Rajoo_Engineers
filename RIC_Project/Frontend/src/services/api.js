@@ -16,7 +16,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.appvirtualex.com"
+  baseURL: "https://ric.appvirtualex.com"
 });
 
 api.interceptors.request.use(config => {
